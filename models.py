@@ -4,6 +4,7 @@ from traitlets import default
 
 db = SQLAlchemy()
 
+default_url ="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/cute-photos-of-cats-excited-1593184777.jpg?crop=1xw:1xh;center,top&resize=768:*"
 def connect_db(app):
     db.app = app
     db.init_app(app)
@@ -24,12 +25,12 @@ class User(db.Model):
 
     url = db.Column(db.Text,
                      nullable=False,
-                     default='flask-blogly/image/default.jpg')
+                     default=default_url)
    
     def delete_user(self, id):
-        return self.query.filter_by(id=id).delete()
+        return self.query.filter_by(id=self.id).delete()
 
-        
+
     def edit_user(self, id):
-        return self.query.filter_by(id=id).delete()
+        return self.query.filter(id==id).delete()
 

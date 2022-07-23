@@ -3,7 +3,7 @@
 {% block content %}
 
 <h2>Edit a user</h2>
-  <form action="/users" method="POST">
+  <form action="/users/{{user.id}}/edit" method="POST">
     <p>First Name
     <input type="text" name="first_name" placeholder="{{user.first_name}}">
     </p>

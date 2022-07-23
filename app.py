@@ -1,5 +1,6 @@
 """Blogly application."""
 
+from crypt import methods
 from flask import Flask,render_template, redirect, flash, session,request
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db,User
@@ -57,10 +58,21 @@ def show_edit(blog_id):
     user = User.query.get_or_404(blog_id)
     return render_template("edit.html", user=user)
 
-@app.route("/users/<int:blog_id>/delete")
+@app.route("/users/<int:blog_id>/edit", methods=["POST"])
+def save_changes(blog_id):
+    user = User.query.get_or_404(blog_id)
+    user.first_name= request.form["first_name"]
+    user.last_name = request.form["last_name"]
+    user.url = request.form["url"]
+
+    db.session.add(user)
+    db.session.commit()
+    return redirect('/users')
+
+@app.route("/users/<int:blog_id>/delete", methods=["POST"])
 def show_delete(blog_id):
-    user_deleted = User.delete_user(blog_id)
-    db.session.add(user_deleted)
+    user = User.query.get_or_404(blog_id)
+    db.session.delete(user)
     db.session.commit()
     return redirect('/users')
 
