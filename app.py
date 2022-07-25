@@ -4,6 +4,7 @@ from crypt import methods
 from flask import Flask,render_template, redirect, flash, session,request
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db,User
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -38,7 +39,7 @@ def show_form():
 def add_user():
     first_name = request.form["first_name"]
     last_name = request.form["last_name"]
-    url = request.form["url"]
+    url = request.form["url"] or "https://i.insider.com/61d1c0e2aa741500193b2d18?width=1000&format=jpeg&auto=webp"
 
     new_user  = User(first_name=first_name, last_name=last_name, url=url)
     db.session.add(new_user)
@@ -63,7 +64,7 @@ def save_changes(blog_id):
     user = User.query.get_or_404(blog_id)
     user.first_name= request.form["first_name"]
     user.last_name = request.form["last_name"]
-    user.url = request.form["url"]
+    user.url = request.form["url"] or "https://i.insider.com/61d1c0e2aa741500193b2d18?width=1000&format=jpeg&auto=webp"
 
     db.session.add(user)
     db.session.commit()
@@ -75,4 +76,9 @@ def show_delete(blog_id):
     db.session.delete(user)
     db.session.commit()
     return redirect('/users')
+
+@app.route("/users/<int:blog_id>/posts/new")
+def show_post_form():
+    return render_template("post.html")
+
 

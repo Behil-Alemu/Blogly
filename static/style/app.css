@@ -1,0 +1,14 @@
+body{
+    
+    background-color:#d0f1f7;
+    border-radius: 10px;
+
+}
+
+.card{
+    width: 400px;
+    border: none;
+    border-radius: 20px;
+     
+    background-color: #fff;
+  }

@@ -1,10 +1,12 @@
 """Models for Blogly."""
+from turtle import title
 from flask_sqlalchemy import SQLAlchemy
+import datetime
 from traitlets import default
 
 db = SQLAlchemy()
 
-default_url ="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/cute-photos-of-cats-excited-1593184777.jpg?crop=1xw:1xh;center,top&resize=768:*"
+default_url ="https://i.insider.com/61d1c0e2aa741500193b2d18?width=1000&format=jpeg&auto=webp"
 def connect_db(app):
     db.app = app
     db.init_app(app)
@@ -26,11 +28,16 @@ class User(db.Model):
     url = db.Column(db.Text,
                      nullable=False,
                      default=default_url)
+    posts = db.relationship('Post',backref='user')
    
-    def delete_user(self, id):
-        return self.query.filter_by(id=self.id).delete()
+class Post(db.Model):
+    __tablename__='post'    
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title= db.Column(db.Text, nullable=False, unique=True)
+    content= db.Column(db.Text, nullable=False, unique=False)
+    created_at=db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    user_id = db.Column(db.Text, db.ForeignKey('blog.id'))
 
 
-    def edit_user(self, id):
-        return self.query.filter(id==id).delete()
-
+    # me=Post(title='About me', content='some stuff', created_at='02/29/2022', user= 'check') db.session.add(me) and db.commit() me.user.first_name  check.posts[0]
