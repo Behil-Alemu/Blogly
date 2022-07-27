@@ -34,10 +34,10 @@ class Post(db.Model):
     __tablename__='post'    
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title= db.Column(db.Text, nullable=False, unique=True)
+    title = db.Column(db.Text, nullable=False, unique=False)
     content= db.Column(db.Text, nullable=False, unique=False)
     created_at=db.Column(db.DateTime, default=datetime.datetime.utcnow)
-    user_id = db.Column(db.Text, db.ForeignKey('blog.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('blog.id'))
 
 
     # me=Post(title='About me', content='some stuff', created_at='02/29/2022', user= 'check') db.session.add(me) and db.commit() me.user.first_name  check.posts[0]

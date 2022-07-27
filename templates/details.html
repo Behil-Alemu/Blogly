@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}{{user.first_name}}{% endblock%}
 {% block content %}
-<div class="container mt-5 d-flex justify-content-center">
-    <div class="card p-3">
+
+
+    
+
         <div class="d-flex align-items-center">
             <div class="image">
             <img src="{{user.url}}"  alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-3"
@@ -13,22 +15,30 @@
                 <h3 class="mb-0 mt-0">{{user.first_name}} {{user.last_name}}</h3>
                 <div class="button mt-2 d-flex flex-row align-items-center">
                     <form action="/users/{{user.id}}/edit">
-                        <button type="button" class="btn btn-sm btn-outline-primary w-100">Edit</button>
+                        <button  class="btn btn-sm btn-outline-primary w-100">Edit</button>
                     </form>
                     <form action="/users/{{user.id}}/delete" method="post">
-                        <button type="button" class="btn btn-sm btn-outline-danger ml-2 w-100" >Delete</button>
+                        <button  class="btn btn-sm btn-outline-danger ml-2 w-100">Delete</button>
                     </form>
                 </div>
                 <h3 class="mb-0 mt-0">Posts</h3>
+                <ul>
+                    {% for post in posts %}
+                    <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
+                    {% endfor %}
+                  </ul>
 
                 <form action="/users/{{user.id}}/posts/new">
-                    <button type="button" class="btn 
+                    <button class="btn 
                     btn-sm btn-primary w-90">Add Post</button>
+                </form>
+                <form action="/">
+                    <button class="btn 
+                    btn-sm btn-primary w-90 mb-3">Home</button>
                 </form>
                 
             </div>
         </div>
-    </div>
-</div>
+
 
 {% endblock %}

@@ -3,7 +3,7 @@
 from crypt import methods
 from flask import Flask,render_template, redirect, flash, session,request
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db,User
+from models import db, connect_db,User,Post
 from datetime import datetime
 
 app = Flask(__name__)
@@ -25,7 +25,7 @@ def to_user():
 @app.route('/users')
 def list_user():
     """Shows list of all pets in db"""
-    users = User.query.all()
+    users = User.query.order_by(User.last_name, User.first_name).all()
     return render_template('list.html', users=users)
 
 
@@ -52,7 +52,8 @@ def add_user():
 def show_details(blog_id):
     """Show details about a single User"""
     user = User.query.get_or_404(blog_id)
-    return render_template("details.html", user=user)
+    posts = Post.query.order_by(Post.created_at.desc()).limit(5).all()
+    return render_template("details.html", user=user,posts=posts)
 
 @app.route("/users/<int:blog_id>/edit")
 def show_edit(blog_id):
@@ -78,7 +79,56 @@ def show_delete(blog_id):
     return redirect('/users')
 
 @app.route("/users/<int:blog_id>/posts/new")
-def show_post_form():
-    return render_template("post.html")
+def show_post_form(blog_id):
+    user = User.query.get_or_404(blog_id)
+    return render_template("post_form.html", user=user)
 
+
+@app.route("/users/<int:blog_id>/posts/new", methods=["POST"] )
+def submit_post_form(blog_id):
+    user = User.query.get_or_404(blog_id)
+    title= request.form["title"]
+    content = request.form["content"]
+    posts= Post(title=title,content=content, user=user)
+
+    db.session.add(posts)
+    db.session.commit()
+    flash(f"Post '{posts.title}' added.")
+    return redirect(f'/users/{blog_id}')
+
+@app.route("/posts/<int:post_id>")
+def show_added_post(post_id):
+    posts = Post.query.get_or_404(post_id)
+    return render_template("post_details.html",posts=posts)
+
+
+@app.route("/post/<int:post_id>/edit")
+def edit_post_form(post_id):
+    posts = Post.query.get_or_404(post_id)
+    return render_template("post_edit_form.html",posts=posts, )
+
+
+@app.route("/post/<int:post_id>/edit", methods=["POST"])
+def edit_post(post_id):
+    posts = Post.query.get_or_404(post_id)
+    posts.title= request.form["title"]
+    posts.content = request.form["content"]
+
+    db.session.add(posts)
+    db.session.commit()
+    flash(f"Post '{posts.title}' edited.")
+    return redirect(f'/posts/{post_id}')
+
+
+@app.route("/posts/<int:post_id>/delete", methods=["POST"])
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(f'/posts/{post_id}')
+
+
+@app.route("/posts/<int:post_id>/cancel", methods=["POST"])
+def cancel_post(post_id):
+    return redirect(f'/posts/{post_id}')
 
