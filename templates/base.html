@@ -6,15 +6,24 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="http://unpkg.com/jquery"></script>
+ 
 </head>
 <body>
+  <ul id="nav_bar">
+    <li class="nav"><a href="/users">User</a></li>
+    <li class="nav"><a href="/tags">Tags</a></li>
+  </ul>
 
   <div class="container mt-5 d-flex justify-content">
-    <div class="card p-3">
+    {%for msg in get_flashed_messages()%}
+    <div class="alert ">{{msg}}</div>
+    {%endfor%}
+    <div>
     {% block content %}
     {% endblock %}
-  </div>
-</div>
+    </div>
+ 
+ </div>
 
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

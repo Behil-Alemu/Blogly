@@ -13,10 +13,12 @@
     <p>Image URL
     <input type="url" name="url" placeholder="{{user.url}}">
     </p>
-    <button>Save</button>
-  </form>
-  <form action="/users/{{user.id}}">
-      <button>Cancel</button>
+    <div class="form-group text-right">
+      <button class="btn 
+      btn-sm btn-info" type="submit">Save</button>
+      <button class="btn 
+      btn-sm btn-outline-info" formaction="/users/{{user.id}}" formmethod="get">Cancel</button>
+    </div>
   </form>
 
 

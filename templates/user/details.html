@@ -3,8 +3,6 @@
 {% block content %}
 
 
-    
-
         <div class="d-flex align-items-center">
             <div class="image">
             <img src="{{user.url}}"  alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-3"
@@ -12,29 +10,34 @@
             </div>
             <div class="ml-4 w-200">
    
-                <h3 class="mb-0 mt-0">{{user.first_name}} {{user.last_name}}</h3>
+                <h3 class="mb-0 mt-0">{{user.full_name}}</h3>
+
                 <div class="button mt-2 d-flex flex-row align-items-center">
-                    <form action="/users/{{user.id}}/edit">
-                        <button  class="btn btn-sm btn-outline-primary w-100">Edit</button>
+                    <form>
+                        <button  class="btn btn-sm btn-outline-primary" formaction="/users/{{user.id}}/edit">Edit
+                        </button>
+
+                        <button  class="btn btn-sm btn-danger"  formaction="/users/{{user.id}}/delete" formmethod="post">Delete
+                        </button>
                     </form>
-                    <form action="/users/{{user.id}}/delete" method="post">
-                        <button  class="btn btn-sm btn-outline-danger ml-2 w-100">Delete</button>
-                    </form>
+                    
                 </div>
                 <h3 class="mb-0 mt-0">Posts</h3>
                 <ul>
-                    {% for post in posts %}
+                    {% for post in user.posts %}
                     <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
                     {% endfor %}
                   </ul>
 
-                <form action="/users/{{user.id}}/posts/new">
+                <form>
                     <button class="btn 
-                    btn-sm btn-primary w-90">Add Post</button>
-                </form>
-                <form action="/">
+                    btn-sm btn-primary"
+                    formaction="/users/{{user.id}}/posts/new">Add Post
+                    </button>
+                
                     <button class="btn 
-                    btn-sm btn-primary w-90 mb-3">Home</button>
+                    btn-sm btn-outline-primary" formaction="/">Home
+                    </button>
                 </form>
                 
             </div>

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Tags{% endblock%}
+{% block content %}
+<h1 class="card-title">Tags </h1>
+<ul>
+    {% for tag in tags %}
+    <li>
+      <a href="/tags/{{tag.id}}">{{tag.name}}</a>
+    </li>
+    {% endfor %}
+  </ul>
+  <form action="tags/new">
+      <button class="btn btn-outline-info">Add Tag</button>
+  </form>
+
+
+{% endblock %}
